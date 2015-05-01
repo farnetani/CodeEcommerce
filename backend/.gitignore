@@ -2,7 +2,3 @@
 /node_modules
 .env
 /private-docs
-.idea
-../.idea
-../.idea/
-*.idea
