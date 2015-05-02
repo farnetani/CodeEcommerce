@@ -1,7 +1,7 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: junior
- * Date: 02/05/15
- * Time: 15:01
- */
+<h1>Exemplo</h1>
+
+<ul>
+    @foreach($categories as $category)
+        <li>{{ $category->name }}</li>
+    @endforeach
+</ul>
