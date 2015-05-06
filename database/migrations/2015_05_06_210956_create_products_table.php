@@ -18,8 +18,8 @@ class CreateProductsTable extends Migration {
 			$table->string('name',255);
 			$table->text('description')->nullable();
 			$table->double('price');
-			$table->text('featured')->nullable();
-			$table->text('recomended')->nullable();
+			$table->boolean('featured')->nullable();
+			$table->boolean('recomended')->nullable();
 			$table->timestamps();
 		});
 	}
