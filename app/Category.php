@@ -6,4 +6,10 @@ class Category extends Model {
 
     protected $fillable = ['name', 'description'];
 
+	//Criando um relacionamento
+	public function products()
+	{
+		return $this->hasMany('CodeCommerce\Product');
+	}
+
 }

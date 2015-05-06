@@ -12,6 +12,9 @@ class UserTableSeeder extends Seeder
 		DB::table('users')->truncate();
 
 		$faker = Faker::create();
+		//Para usar pt-br é só fazer conforme abaixo
+		//$cep= \Faker\Provider\pt_BR\Address::postcode();
+
 
 		User::create([
 			'name' => 'Junior',
