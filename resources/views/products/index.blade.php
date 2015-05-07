@@ -38,5 +38,6 @@
                 </div>
             </div>
         </div>
+        {!! $products->render() !!}
     </div>
 @endsection

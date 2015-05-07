@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container">
-        <h1> Create Category</h1>
+        <h1> Products </h1>
 
         @if ($errors->any())
 
@@ -14,7 +14,7 @@
             </ul>
         @endif
 
-        {!! Form::open(['route'=>'categories.store']) !!}
+        {!! Form::open(['route'=>'products.store']) !!}
 
         <div class="form-group">
             {!! Form::label('category','Category:') !!}
@@ -29,6 +29,11 @@
         <div class="form-group">
             {!! Form::label('description','Description:') !!}
             {!! Form::textarea('description', null, ['class'=>'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('price','Price:') !!}
+            {!! Form::text('price', null, ['class'=>'form-control']) !!}
         </div>
 
         <div calss="form-group">

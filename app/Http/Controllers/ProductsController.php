@@ -3,6 +3,7 @@
 use CodeCommerce\Category;
 use CodeCommerce\Http\Requests;
 use CodeCommerce\Product;
+use Illuminate\Support\Facades\Route;
 
 class ProductsController extends Controller
 {
@@ -15,7 +16,9 @@ class ProductsController extends Controller
 	public function index()
 	{
 		//return "Listagem de Produtos";
-		$products = $this->productModel->all();
+		//$products = $this->productModel->all();
+		//Para paginar
+		$products = $this->productModel->paginate(5);
 		return view('products.index',compact('products'));
 	}
 
@@ -35,13 +38,15 @@ class ProductsController extends Controller
 
 		$product->save();
 
-		return redirect('products');
+		//return redirect('products');
+		return redirect(Route('products'));
 	}
 
 	public function destroy($id)
 	{
 		$this->productModel->find($id)->delete();
-		return redirect('products');
+		//return redirect('/admin/products');
+		return redirect(Route('products'));
 	}
 
 	public function edit($id, Category $category)
@@ -55,7 +60,8 @@ class ProductsController extends Controller
 	public function update(Requests\ProductRequest $request, $id)
 	{
 		$this->productModel->find($id)->update($request->all());
-		return redirect('products');
+		//return redirect('/admin/products');
+		return redirect(Route('products'));
 	}
 
 }

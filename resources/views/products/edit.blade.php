@@ -30,6 +30,11 @@
             {!! Form::textarea('description', $product->description, ['class'=>'form-control']) !!}
         </div>
 
+        <div class="form-group">
+            {!! Form::label('name','Name:') !!}
+            {!! Form::text('name', $product->price, ['class'=>'form-control']) !!}
+        </div>
+
         <div calss="form-group">
             {!! Form::submit('Salvar', ['class'=>'btn btn-primary']) !!}
         </div>
