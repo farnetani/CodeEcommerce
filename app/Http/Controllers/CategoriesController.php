@@ -17,7 +17,8 @@ class CategoriesController extends Controller
 	public function index()
 	{
 		//return "Listagem de Categorias";
-		$categories = $this->categoryModel->all();
+		//$categories = $this->categoryModel->all();
+		$categories = $this->categoryModel->paginate(5);
 		return view('categories.index',compact('categories'));
 	}
 
@@ -34,13 +35,15 @@ class CategoriesController extends Controller
 
 		$category->save();
 
-		return redirect('categories');
+		//return redirect('categories');
+		return redirect(Route('categories'));
 	}
 
 	public function destroy($id)
 	{
 		$this->categoryModel->find($id)->delete();
-		return redirect('categories');
+		//return redirect('categories');
+		return redirect(Route('categories'));
 	}
 
 	public function edit($id)
@@ -52,7 +55,8 @@ class CategoriesController extends Controller
 	public function update(Requests\CategoryRequest $request, $id)
 	{
 		$this->categoryModel->find($id)->update($request->all());
-		return redirect('categories');
+		//return redirect('categories');
+		return redirect(Route('categories'));
 	}
 
 }

@@ -57,7 +57,8 @@ Route::group(['prefix'=>'admin', 'where'=> ['id'=> '[0-9]+']], function(){
 
 Route::get('/exemplo', 'WelcomeController@exemplo');
 
-Route::get('/', 'WelcomeController@index');
+//Route::get('/', 'WelcomeController@index');
+Route::get('/', 'ProductsController@index');
 
 Route::get('home', 'HomeController@index');
 
