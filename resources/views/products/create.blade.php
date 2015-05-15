@@ -36,6 +36,13 @@
             {!! Form::text('price', null, ['class'=>'form-control']) !!}
         </div>
 
+        <div class="form-group">
+            {!! Form::label('featured','Featured:') !!}
+            {!! Form::checkbox('featured', null, $product->featured) !!}
+            &nbsp;&nbsp;{!! Form::label('recommended','Recommended:') !!}
+            {!! Form::checkbox('recommended', null, $product->recommended) !!}
+        </div>
+
         <div calss="form-group">
             {!! Form::submit('Add Produto', ['class'=>'btn btn-primary']) !!}
         </div>

@@ -31,8 +31,18 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('name','Name:') !!}
-            {!! Form::text('name', $product->price, ['class'=>'form-control']) !!}
+            {!! Form::label('price','Price:') !!}
+            {!! Form::text('price', $product->price, ['class'=>'form-control']) !!}
+        </div>
+
+        {!! $product->featured !!}
+
+        <div class="form-group">
+            {!! Form::label('featured','Featured:') !!}
+            {!! Form::checkbox('featured', 1, $product->featured) !!}
+            &nbsp;&nbsp;
+            {!! Form::label('recommended','Recommended:') !!}
+            {!! Form::checkbox('recommended', 1, $product->recommended) !!}
         </div>
 
         <div calss="form-group">
