@@ -3,22 +3,28 @@
 use CodeCommerce\Category;
 use CodeCommerce\Http\Requests;
 use CodeCommerce\Product;
-use Illuminate\Support\Facades\Route;
+use CodeCommerce\ProductImage;
+
+use Illuminate\Http\Request;
+//não recomenda usar as façades abaixo
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProductsController extends Controller
 {
 
-	private $productModel;
-	public function __construct(Product $productModel)
+	private $model;
+	public function __construct(Product $model)
 	{
-		$this->productModel = $productModel;
+		$this->model = $model;
 	}
 	public function index()
 	{
 		//return "Listagem de Produtos";
-		//$products = $this->productModel->all();
+		//$products = $this->model->all();
 		//Para paginar
-		$products = $this->productModel->paginate(5);
+		$products = $this->model->paginate(5);
 		return view('products.index',compact('products'));
 	}
 
@@ -34,7 +40,7 @@ class ProductsController extends Controller
 	{
 		$input = $request->all();
 
-		$product = $this->productModel->fill($input);
+		$product = $this->model->fill($input);
 
 		$product->save();
 
@@ -44,7 +50,7 @@ class ProductsController extends Controller
 
 	public function destroy($id)
 	{
-		$this->productModel->find($id)->delete();
+		$this->model->find($id)->delete();
 		//return redirect('/admin/products');
 		return redirect(Route('products'));
 	}
@@ -53,15 +59,56 @@ class ProductsController extends Controller
 	{
 		$categories = $category->lists('name', 'id');
 
-		$product = $this->productModel->find($id);
+		$product = $this->model->find($id);
 		return view('products.edit', compact('product', 'categories'));
 	}
 
 	public function update(Requests\ProductRequest $request, $id)
 	{
-		$this->productModel->find($id)->update($request->all());
+		$this->model->find($id)->update($request->all());
 		//return redirect('/admin/products');
 		return redirect(Route('products'));
 	}
 
+	public function images($id)
+	{
+		$product = $this->model->find($id);
+
+		return view('products.images', compact('product'));
+	}
+
+	public function createImage($id)
+	{
+		$product = $this->model->find($id);
+		return view('products.create_image', compact('product'));
+	}
+
+	//public function storeImage(Request $request, $id, ProductImage $productImage)
+	public function storeImage(Requests\productImageRequest $request, $id, ProductImage $productImage)
+	{
+		$file = $request->file('image');
+
+		$extension = $file->getClientOriginalExtension();
+
+		$image = $productImage::create(['product_id'=>$id, 'extension'=>$extension]);
+
+		Storage::disk('public_local')->put($image->id.".".$extension,File::get($file));
+
+		return redirect()->route('products.images',['id'=>$id]);
+
+	}
+	public function destroyImage(ProductImage $productImage, $id)
+	{
+		$image = $productImage->find($id);
+
+		//Se o arquivo existir ele apaga
+		if(file_exists(public_path() . '/uploads/'.$image->id.'.'.$image->extension)) {
+
+			Storage::disk('public_local')->delete($image->id . '.' . $image->extension);
+		}
+		$product = $image->product;
+		$image->delete();
+
+		return redirect()->route('products.images', ['id'=>$product->id]);
+	}
 }

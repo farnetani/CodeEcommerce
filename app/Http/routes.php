@@ -33,6 +33,16 @@ Route::group(['prefix'=>'admin', 'where'=> ['id'=> '[0-9]+']], function(){
 		Route::get('{id}/edit',['as'=>'products.edit', 'uses'=>'ProductsController@edit']);
 		Route::put('{id}/update',['as'=>'products.update', 'uses'=>'ProductsController@update']);
 
+
+		//Criando as rotas para images
+		Route::group(['prefix'=>'images'],function(){
+
+			//site.com.br/admin/products/images/{id}/product
+			Route::get('{id}/product',['as'=>'products.images', 'uses'=>'ProductsController@images']);
+			Route::get('create/{id}/product',['as'=>'products.images.create', 'uses'=>'ProductsController@createImage']);
+			Route::post('store/{id}/product',['as'=>'products.images.store', 'uses'=>'ProductsController@storeImage']);
+			Route::get('destroy/{id}/image',['as'=>'products.images.destroy', 'uses'=>'ProductsController@destroyImage']);
+		});
 	});
 
 });
@@ -55,10 +65,11 @@ Route::group(['prefix'=>'admin', 'where'=> ['id'=> '[0-9]+']], function(){
 
 
 
-Route::get('/exemplo', 'WelcomeController@exemplo');
+//Route::get('/', 'WelcomeController@exemplo');
+Route::get('/', 'StoreController@index');
 
 //Route::get('/', 'WelcomeController@index');
-Route::get('/', 'ProductsController@index');
+//Route::get('/', 'ProductsController@index');
 
 Route::get('home', 'HomeController@index');
 

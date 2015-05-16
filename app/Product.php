@@ -13,6 +13,10 @@ class Product extends Model {
 		'recommended'
 	];
 
+	public function images()
+	{
+		return $this->hasMany('CodeCommerce\ProductImage');
+	}
 
 	//Relacionamento com a Categoria
 	public function category()
@@ -21,4 +25,8 @@ class Product extends Model {
 	}
 
 
+	public function tags()
+	{
+		return $this->belongsToMany('CodeCommerce\Tag');
+	}
 }
