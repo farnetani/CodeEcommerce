@@ -14,11 +14,15 @@ class StoreController extends Controller {
 	public function index()
 	{
 
-		$pFeatured = Product::where('featured','=', 1)->get();
+		//$pFeatured = Product::where('featured','=', 1)->get();  //método antigo sem query scope
+		$pFeatured = Product::featured()->get();
+
+		//$pRecommended = Product::where('recommended','=', 1)->get();
+		$pRecommended = Product::recommended()->get();
 		//dd($pFeatured);
 		$categories = Category::all();
 
-		return view('store.index', compact('categories','pFeatured'));
+		return view('store.index', compact('categories','pFeatured','pRecommended'));
 	}
 
 
