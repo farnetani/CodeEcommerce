@@ -35,7 +35,6 @@
             {!! Form::text('price', $product->price, ['class'=>'form-control']) !!}
         </div>
 
-        {!! $product->featured !!}
 
         <div class="form-group">
             {!! Form::label('featured','Featured:') !!}

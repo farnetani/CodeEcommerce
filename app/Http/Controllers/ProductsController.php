@@ -38,6 +38,10 @@ class ProductsController extends Controller
 
 	public function store(Requests\ProductRequest $request)
 	{
+
+		$request['recommended'] = $request->get('recommended')?$request->get('recommended'):0;
+		$request['featured'] = $request->get('featured')?$request->get('featured'):0;
+
 		$input = $request->all();
 
 		$product = $this->model->fill($input);
@@ -65,6 +69,9 @@ class ProductsController extends Controller
 
 	public function update(Requests\ProductRequest $request, $id)
 	{
+		$request['recommended'] = $request->get('recommended')?$request->get('recommended'):0;
+		$request['featured'] = $request->get('featured')?$request->get('featured'):0;
+
 		$this->model->find($id)->update($request->all());
 		//return redirect('/admin/products');
 		return redirect(Route('products'));
