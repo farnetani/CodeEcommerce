@@ -5,6 +5,7 @@ use CodeCommerce\Http\Requests;
 use CodeCommerce\Product;
 use CodeCommerce\ProductImage;
 
+use CodeCommerce\Tag;
 use Illuminate\Http\Request;
 //não recomenda usar as façades abaixo
 use Illuminate\Support\Facades\File;
@@ -46,6 +47,16 @@ class ProductsController extends Controller
 
 		$product = $this->model->fill($input);
 
+		//Verificar se é realmente a forma mais elegante de fazer
+		$array_tags_id = ProductsController::tratarTags($request);
+
+		//Não dá pra usar se tiver que salvar uma tag nova...pq irá precisar do id do produto que eu ainda nao tenho
+		//$product->tags()->sync($array_tags_id);
+
+		$product->save();
+
+		//depois que eu tenho o id eu chamo a função que irá verificar se tem a tag/cadastrar e vincular
+		$product->tags()->sync($array_tags_id);
 		$product->save();
 
 		//return redirect('products');
@@ -67,12 +78,59 @@ class ProductsController extends Controller
 		return view('products.edit', compact('product', 'categories'));
 	}
 
+    public function tratarTags(Requests\ProductRequest $request)
+    {
+	    //Paga salvar as tags
+	    $tags = $request->all()['tags'];
+	    $array_tags = explode(',', $tags);
+
+	    $array_tags_id = [];
+	    foreach ($array_tags as $tag) {
+		    $mTag = Tag::where('name','=',trim($tag))->get();
+
+		    $aTag = $mTag->toArray();
+		    foreach ($aTag as $r) {
+			    $array_tags_id[]=(integer)$r['id'];
+
+		    }
+		    //Video: Relacionamento: MANYTOMANY - Relacionando: http://portal.code.education/lms/#/42/56/60/conteudos?capitulo=375&conteudo=2362
+		    //Verifica se a Tag não existe, se não existir cadastra ela!
+		    if ($mTag->isEmpty())
+		    {
+			    $regTag = new Tag;
+			    $regTag->name=trim($tag);
+			    $regTag->save();
+
+			    $mTag = Tag::where('name','=',trim($tag))->get();
+
+			    $aTag = $mTag->toArray();
+			    foreach ($aTag as $r) {
+				    $array_tags_id[]=(integer)$r['id'];
+			    }
+
+		    }
+	    }
+	    //Finalizado: salvar tags
+	    return $array_tags_id;
+
+    }
+
 	public function update(Requests\ProductRequest $request, $id)
 	{
 		$request['recommended'] = $request->get('recommended')?$request->get('recommended'):0;
 		$request['featured'] = $request->get('featured')?$request->get('featured'):0;
 
-		$this->model->find($id)->update($request->all());
+		//Verificar se é realmente a forma mais elegante de fazer
+		$array_tags_id = ProductsController::tratarTags($request);
+
+		//$this->model->find($id)->update($request->all());
+
+		//Desmembrei para jogar as tags na jogada
+		$modProduct = $this->model->find($id);
+		//$modProduct->tags()->sync([5,6]);
+		$modProduct->tags()->sync($array_tags_id);
+		$modProduct->update($request->all());
+
 		//return redirect('/admin/products');
 		return redirect(Route('products'));
 	}

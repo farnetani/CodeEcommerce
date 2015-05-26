@@ -44,6 +44,11 @@
             {!! Form::checkbox('recommended', null) !!}
         </div>
 
+        <div>
+            {!! Form::label('tags','Tags:') !!}
+            {!! Form::textarea('tags', null, ['class'=>'form-control']) !!}
+        </div>
+
         <div calss="form-group">
             {!! Form::submit('Add Produto', ['class'=>'btn btn-primary']) !!}
         </div>

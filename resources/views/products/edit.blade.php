@@ -44,6 +44,11 @@
             {!! Form::checkbox('recommended', 1, $product->recommended) !!}
         </div>
 
+        <div>
+            {!! Form::label('tags','Tags:') !!}
+            {!! Form::textarea('tags', $product->tag_list, ['class'=>'form-control']) !!}
+        </div>
+
         <div calss="form-group">
             {!! Form::submit('Salvar', ['class'=>'btn btn-primary']) !!}
         </div>
